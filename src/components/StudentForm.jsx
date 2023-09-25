@@ -15,48 +15,93 @@ export default function StudentForm() {
     const [coursesDB, setCoursesDB] = useState([]);
     const [coursesArr, setCoursesArr] = useState([]);
 
+    const [errors, setErrors] = useState({});
+
     const [data, setData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        age: '',
+        age: 0,
         dob: '',
         gender: '',
-        contact: '',
+        contact: 0,
         parentContact: '',
         education: '',
         itLevel: '',
         courses: '',
         fees: 0,
         paidFees: 0,
-        couponCode: '',
+        couponCode: ''
     });
 
 
     const handleChange = (event) => {
         const {name, value} = event.target;
         setData({...data, [name]: value});
+
+        validateField(name, value);
     }
+
+    const validateField = (name, value) => {
+        // let error = "";
+        // switch (name) {
+        //     case "firstName":
+        //         if (value.trim() === "") {
+        //             error = "First name is required";
+        //         }
+        //         break;
+        //     case "lastName":
+        //         if (value.trim() === "") {
+        //             error = "Last name is required";
+        //         }
+        //         break;
+        //     case "email":
+        //         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        //             error = "Invalid email address";
+        //         }
+        //         break;
+        //     case "age":
+        //         if (isNaN(value) || value <= 0) {
+        //             error = "Age must be a positive number";
+        //         }
+        //         break;
+        //     // Add validation for other fields here
+        //     default:
+        //         break;
+        // }
+        // setErrors({ ...errors, [name]: error });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setData({...data, courses: coursesArr.join(', ')});
-        console.log(data.courses);
-        const response = await fetch('http://localhost:3001/api/students', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-        console.log(data);
-        if (response.ok) {
-            console.log('Submission successful');
+        // for (const key in data) {
+        //     if (!data[key]) {
+        //         console.log(!data[key]);
+        //         // console.log(errors[key]);
+        //         alert("Please fix the errors in the form.");
+        //         return;
+        //     }
+        // }
 
-            sendEmail();
-        } else {
-            console.error('Submission failed');
+        setData({...data, courses: coursesArr.join(', ')});
+
+        try {
+            const response = await axios.post('http://localhost:3001/api/students', data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log(data);
+            if (response.status === 201) {
+                console.log('Submission successful');
+                sendEmail();
+            } else {
+                console.error('Submission failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 
@@ -191,6 +236,9 @@ export default function StudentForm() {
                                 className="form-control"
                                 required
                             />
+                            {errors.firstName && (
+                                <div className="error">{errors.firstName}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label htmlFor="lastName">Last Name:</label>
@@ -203,6 +251,9 @@ export default function StudentForm() {
                                 className="form-control"
                                 required
                             />
+                            {errors.lastName && (
+                                <div className="error">{errors.lastName}</div>
+                            )}
                         </div>
 
                         <div className="form-group">
@@ -216,6 +267,9 @@ export default function StudentForm() {
                                 className="form-control"
                                 required
                             />
+                            {errors.email && (
+                                <div className="error">{errors.email}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label htmlFor="age">Age:</label>
@@ -228,6 +282,9 @@ export default function StudentForm() {
                                 className="form-control"
                                 required
                             />
+                            {errors.age && (
+                                <div className="error">{errors.age}</div>
+                            )}
                         </div>
                         <div className="form-group dob">
                             <label htmlFor="dob">Date of Birth:</label>
@@ -244,6 +301,9 @@ export default function StudentForm() {
                                     onChange={handleChange}
                                     required
                                 />
+                                {errors.dob && (
+                                    <div className="error">{errors.dob}</div>
+                                )}
                             </div>
                         </div>
                         <div className="form-group">
@@ -260,6 +320,9 @@ export default function StudentForm() {
                                 <option value="Female">Female</option>
                                 <option value="Others">Others</option>
                             </select>
+                            {errors.gender && (
+                                <div className="error">{errors.gender}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label htmlFor="contact">Contact:</label>
@@ -272,6 +335,9 @@ export default function StudentForm() {
                                 className="form-control"
                                 required
                             />
+                            {errors.contact && (
+                                <div className="error">{errors.contact}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label htmlFor="parentContact">Parent Contact:</label>
@@ -284,6 +350,9 @@ export default function StudentForm() {
                                 className="form-control"
                                 required
                             />
+                            {errors.parentContact && (
+                                <div className="error">{errors.parentContact}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label htmlFor="education">Education:</label>
@@ -299,6 +368,9 @@ export default function StudentForm() {
                                 <option value="Master's Degree">Master&#39;s Degree</option>
                                 <option value="Ph.D.">Ph.D.</option>
                             </select>
+                            {errors.education && (
+                                <div className="error">{errors.education}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label htmlFor="itLevel">Level in IT:</label>

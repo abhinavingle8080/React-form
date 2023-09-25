@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Enable cookies and other credentials
+    credentials: true,
 }));
 
 app.use('/api', studentRouter);

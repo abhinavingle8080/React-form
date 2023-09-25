@@ -72,3 +72,7 @@
 .form-group{
     margin-bottom: 20px;
 }
+
+.error{
+    color: red;
+}

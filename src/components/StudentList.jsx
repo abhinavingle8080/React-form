@@ -30,12 +30,10 @@ export default function StudentList() {
 
 
     const handleUpdate = (student) => {
-        // Implement your update logic here
         alert(`Update Student: ${student["First Name"]} ${student["Last Name"]}`);
     };
 
     const handleDelete = (student) => {
-        // Implement your delete logic here
         alert(`Delete Student: ${student["First Name"]} ${student["Last Name"]}`);
     };
 
