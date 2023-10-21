@@ -33,6 +33,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Student',
+     // paranoid :
+     // underscored :
   });
   return Student;
 };

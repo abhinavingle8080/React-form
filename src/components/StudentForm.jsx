@@ -5,6 +5,8 @@ import '../styles/StudentForm.css';
 import '../styles/CoursesDropDown.css';
 import logo from '../img/Full-Logo.png';
 import axios from "axios";
+import Select from "react-select/base";
+import CreatableSelect from "react-select/creatable";
 
 
 export default function StudentForm() {
@@ -13,9 +15,32 @@ export default function StudentForm() {
     const [validCoupons, setValidCoupons] = useState([]);
 
     const [coursesDB, setCoursesDB] = useState([]);
-    const [coursesArr, setCoursesArr] = useState([]);
+
 
     const [errors, setErrors] = useState({});
+
+    const [coursesArr, setCoursesArr] = useState([]); // Your courses state
+    const [isMenuOpen, setIsMenuOpen] = useState(true); // Control the menu open state
+
+    const handleChangeCourses = (selectedOptions) => {
+        // Update your selected courses state here
+        setCoursesArr(selectedOptions.map(option => option.value));
+    };
+
+    const courseOptions = [
+        { value: "Core Java", label: "Core Java" },
+        { value: "Core Java + Project in Core Java", label: "Core Java + Project in Core Java" },
+        { value: "Java Placement Batch", label: "Java Placement Batch" },
+        { value: "Only Project in Java", label: "Only Project in Java" },
+        { value: "C language", label: "C language" },
+        { value: "C++ language", label: "C++ language" },
+        { value: "Python", label: "Python" },
+        { value: "Python FullStack", label: "Python FullStack" },
+        { value: "DSA", label: "DSA" },
+        { value: "Front-end", label: "Front-end" },
+        // Add other course options here
+    ];
+
 
     const [data, setData] = useState({
         firstName: '',
@@ -43,33 +68,33 @@ export default function StudentForm() {
     }
 
     const validateField = (name, value) => {
-        // let error = "";
-        // switch (name) {
-        //     case "firstName":
-        //         if (value.trim() === "") {
-        //             error = "First name is required";
-        //         }
-        //         break;
-        //     case "lastName":
-        //         if (value.trim() === "") {
-        //             error = "Last name is required";
-        //         }
-        //         break;
-        //     case "email":
-        //         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        //             error = "Invalid email address";
-        //         }
-        //         break;
-        //     case "age":
-        //         if (isNaN(value) || value <= 0) {
-        //             error = "Age must be a positive number";
-        //         }
-        //         break;
-        //     // Add validation for other fields here
-        //     default:
-        //         break;
-        // }
-        // setErrors({ ...errors, [name]: error });
+        let error = "";
+        switch (name) {
+            case "firstName":
+                if (value.trim() === "") {
+                    error = "First name is required";
+                }
+                break;
+            case "lastName":
+                if (value.trim() === "") {
+                    error = "Last name is required";
+                }
+                break;
+            case "email":
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                    error = "Invalid email address";
+                }
+                break;
+            case "age":
+                if (isNaN(value) || value <= 0) {
+                    error = "Age must be a positive number";
+                }
+                break;
+            // Add validation for other fields here
+            default:
+                break;
+        }
+        setErrors({ ...errors, [name]: error });
     };
 
     const handleSubmit = async (e) => {
@@ -151,6 +176,7 @@ export default function StudentForm() {
         fetchCoupons();
 
         try {
+            // validCoupons.includes(())
             for (let i = 0; i < validCoupons.length; i++) {
                 if (validCoupons[i].code === data.couponCode) {
                     console.log('coupon is valid');
@@ -163,7 +189,7 @@ export default function StudentForm() {
         }
     }
 
-    const handleChangeCourses = (event) => {
+    const handleChangeCourses2 = (event) => {
         const { value, checked } = event.target;
 
         setCoursesArr((prevCoursesArr) => {
@@ -391,132 +417,27 @@ export default function StudentForm() {
                         <div>
                             <details className={"mt-2 mb-3"}>
                                 <summary>Choose the course you want to enroll</summary>
-                                {/*<ul onInput={updateCourseFees}>*/}
-                                <ul>
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="Core Java"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("Core Java")}
-                                            />
-                                            Core Java
-                                        </label>
-                                    </li>
 
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="Core Java + Project in Core Java"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("Core Java + Project in Core Java")}
-                                            />
-                                            Core Java + Project in Core Java
-                                        </label>
-                                    </li>
-
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="Java Placement Batch"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("Java Placement Batch")}
-                                            />
-                                            Java Placement Batch
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="Only Project in Java"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("Only Project in Java")}
-                                            />
-                                            Only Project in Java
-                                        </label>
-                                    </li>
-
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="C language"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("C language")}
-                                            />
-                                            C language
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="C++ language"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("C++ language")}
-                                            />
-                                            C++ language
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="Python"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("Python")}
-                                            />
-                                            Python
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="Python FullStack"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("Python FullStack")}
-                                            />
-                                            Python FullStack
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="DSA"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("DSA")}
-                                            />
-                                            DSA
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                name="fc"
-                                                value="Front-end"
-                                                onChange={handleChangeCourses}
-                                                checked={coursesArr.includes("Front-end")}
-                                            />
-                                            Front-end
-                                        </label>
-                                    </li>
-                                </ul>
+                                <Select
+                                    isMulti
+                                    options={[
+                                        { value: "Core Java", label: "Core Java" },
+                                        { value: "Core Java + Project in Core Java", label: "Core Java + Project in Core Java" },
+                                        { value: "Java Placement Batch", label: "Java Placement Batch" },
+                                        { value: "Only Project in Java", label: "Only Project in Java" },
+                                        { value: "C language", label: "C language" },
+                                        { value: "C++ language", label: "C++ language" },
+                                        { value: "Python", label: "Python" },
+                                        { value: "Python FullStack", label: "Python FullStack" },
+                                        { value: "DSA", label: "DSA" },
+                                        { value: "Front-end", label: "Front-end" },
+                                    ]}
+                                    onChange={handleChangeCourses2}
+                                    value={coursesArr.map(label => ({
+                                        value: label,
+                                        label: label
+                                    }))}
+                                    ></Select>
                             </details>
 
                             <div className="selected-courses-box">
@@ -528,9 +449,8 @@ export default function StudentForm() {
                                 </ul>
                             </div>
 
-                            <button type="button" onClick={updateCourseFees}> Confirm</button>
+                            <button type="button" onClick={updateCourseFees}>Confirm</button>
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="paidFees">Paid Fees:</label>
                             <input

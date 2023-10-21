@@ -57,12 +57,16 @@ module.exports = {
       lastFeesDate: {
         type: Sequelize.DATE
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
-        allowNull: false,
+      updated_at: {
+        allowNull: true,  //
+        type: Sequelize.DATE
+      },
+      deleted_at: {
+        allowNull: true,  //
         type: Sequelize.DATE
       }
     });
